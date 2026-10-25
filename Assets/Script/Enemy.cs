@@ -36,4 +36,14 @@ public class Enemy : MonoBehaviour
         target = GameObject.Find("Player");
     }
 
+
+    protected virtual void Update()
+    {
+        if (health <= 0)
+        {
+            Die();
+            return;
+        }
+        Move();
+    }
 }

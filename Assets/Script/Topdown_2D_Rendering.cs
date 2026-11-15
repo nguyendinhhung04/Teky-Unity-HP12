@@ -11,12 +11,12 @@ public class Topdown_2D_Rendering : MonoBehaviour
     private void Start()
     {
         sr = GetComponent<SpriteRenderer>();
-        root = this.gameObject.transform.GetChild(0);
+        root = transform.childCount > 0 ? transform.GetChild(0) : transform;
     }
 
     void LateUpdate()
     {
-        if(sr == null  )
+        if(sr == null || root == null)
         {
             return;
         }

@@ -19,8 +19,10 @@ public class Knight_Enemy : Enemy
 
     public void AttackPlayer(PlayerScript player)
     {
-        player.health -= damage;
-        
+        if (player != null && damage > 0f)
+        {
+            player.health = Mathf.Max(0f, player.health - damage);
+        }
     }
 
 
@@ -38,19 +40,28 @@ public class Knight_Enemy : Enemy
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.CompareTag("Player")) //Co cham vao target khong
+        Player1 player1 = collision.gameObject.GetComponentInParent<Player1>();
+        PlayerScript player = collision.gameObject.GetComponentInParent<PlayerScript>();
+        if (player1 == null && player == null)
         {
-            if (!isCoolDownAfterAttack)
-            {
-                Debug.Log("Knight Enemy Hit Player");
-
-                AttackPlayer(collision.gameObject.GetComponent<PlayerScript>());
-
-                isCoolDownAfterAttack = true;
-
-                StartCoroutine(WaitFor3Second(attackCoolDown));
-            }
-
+            return;
         }
+
+        if (isCoolDownAfterAttack)
+        {
+            return;
+        }
+
+        if (player1 != null)
+        {
+            player1.TakeDamage(damage);
+        }
+        else
+        {
+            AttackPlayer(player);
+        }
+
+        isCoolDownAfterAttack = true;
+        StartCoroutine(WaitFor3Second(attackCoolDown));
     }
 }

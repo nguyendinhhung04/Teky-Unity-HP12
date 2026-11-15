@@ -1,5 +1,3 @@
-using JetBrains.Annotations;
-using Mono.Cecil;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
@@ -33,7 +31,27 @@ public class Enemy : MonoBehaviour
 
     private void Start()
     {
+        if (target != null)
+        {
+            return;
+        }
+
         target = GameObject.Find("Player");
+        if (target == null)
+        {
+            Player1 player1 = FindFirstObjectByType<Player1>();
+            if (player1 != null)
+            {
+                target = player1.gameObject;
+                return;
+            }
+
+            PlayerScript player = FindFirstObjectByType<PlayerScript>();
+            if (player != null)
+            {
+                target = player.gameObject;
+            }
+        }
     }
 
 
